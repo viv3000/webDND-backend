@@ -20,7 +20,7 @@ class backgroundSerializer(serializers.ModelSerializer):
 class alignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = alignment;
-        fields = ['title', 'description'];
+        fields = ['id', 'title', 'description'];
 
 class characteristicSerializer(serializers.ModelSerializer):
     class Meta:

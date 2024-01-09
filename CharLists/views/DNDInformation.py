@@ -8,8 +8,8 @@ from rest_framework import renderers
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 
-from CharLists.models import gameClass, gameRace, background
-from CharLists.serializers import gameClassSerializer, gameRaceSerializer, backgroundSerializer
+from CharLists.models import gameClass, gameRace, background, alignment
+from CharLists.serializers import gameClassSerializer, gameRaceSerializer, backgroundSerializer, alignmentSerializer
 
 
 def classList(request):
@@ -22,6 +22,13 @@ def classList(request):
 def raceList(request):
         gameRaces = gameRace.objects.all();
         serialized = gameRaceSerializer(gameRaces, many=True)
+
+        json = renderers.JSONRenderer().render(serialized.data)
+        return HttpResponse(json)
+
+def alignmentList(request):
+        alignments = alignment.objects.all();
+        serialized = alignmentSerializer(alignments, many=True)
 
         json = renderers.JSONRenderer().render(serialized.data)
         return HttpResponse(json)

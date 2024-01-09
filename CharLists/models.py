@@ -61,7 +61,7 @@ class charList(models.Model):
     description = models.TextField()
 
     gameClassMain = models.ForeignKey(gameClass,  on_delete=models.CASCADE)
-    gameRace      = models.ForeignKey(gameRace,   on_delete=models.CASCADE)
+    gameRace      = models.ForeignKey(gameRace,   on_delete=models.CASCADE, null=True, blank=True)
     background    = models.ForeignKey(background, on_delete=models.CASCADE, null=True, blank=True)
     alignment     = models.ForeignKey(alignment,  on_delete=models.CASCADE, null=True, blank=True)
     user          = models.ForeignKey(User,       on_delete=models.CASCADE)
@@ -73,7 +73,7 @@ class charList(models.Model):
     wisdom       = models.IntegerField()
     charisma     = models.IntegerField()
 
-    img = models.ImageField(upload_to='img/persons/', height_field=100, width_field=100, null=True, blank=True)
+    img = models.ImageField(upload_to='img/persons/', null=True, blank=True)
     def __str__(self):
         return self.name;
 

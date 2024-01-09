@@ -1,6 +1,8 @@
 from django.core import serializers
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from rest_framework.viewsets import ViewSet
 from rest_framework import authentication, permissions
@@ -9,9 +11,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 
-from CharLists.models import charList , gameClass, gameRace
-from CharLists.serializers import charListSerializer
+import io
 
+from CharLists.models import charList , gameClass, gameRace, background, alignment
+from CharLists.serializers import charListSerializer, charListImgSerializer
 
 class CharLists(ViewSet):
     authentication_classes = [authentication.TokenAuthentication]
@@ -26,8 +29,14 @@ class CharLists(ViewSet):
         json = renderers.JSONRenderer().render(serialized.data)
         return HttpResponse(json);
 
-    def isCompleteRequest(self, request):
-        return False
+    def listImg(self, request):
+        UserId = Token.objects.get(key=request.auth.key).user.pk
+
+        charLists  = charList.objects.filter(user=UserId)
+        serialized = charListImgSerializer(charLists, many=True)
+
+        json = renderers.JSONRenderer().render(serialized.data)
+        return HttpResponse(json);
 
     def add(self, request):
         UserId = Token.objects.get(key=request.auth.key).user.pk
@@ -51,11 +60,19 @@ class CharLists(ViewSet):
                 gameRace      = gameRace.objects.get (id = request.data['gameRace'])
             );
             if 'background' in request.data:
-                cl.background = request.data['background']
+                cl.background = background.objects.get(id = request.data['background'])
             if 'alignment' in request.data:
-                cl.alignment = request.data['alignment']
+                cl.alignment = alignment.objects.get(id = request.data['alignment'])
             if 'img' in request.data:
-                cl.img = request.data['img']
-
+                print(type(request.data['img'].field_name))
+                print(request.data['img'].charset)
+                print(request.data['img'].file)
+                print(type(cl.img))
+                print(type(request.FILES['img']))
+                cl.img = request.FILES['img']
             cl.save();
             return Response({'ok': 'True'});
+
+    def isCompleteRequest(self, request):
+        return False
+
