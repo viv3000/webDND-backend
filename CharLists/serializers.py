@@ -71,7 +71,8 @@ class charListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = charList;
-        fields = ['name', 
+        fields = ['id',
+                  'name', 
                   'gameClassMain',
                   'gameRace',
                   'background',
@@ -104,7 +105,8 @@ class charListImgSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = charList;
-        fields = ['name', 
+        fields = ['id',
+                  'name', 
                   'gameClassMain', 
                   'gameRace', 
                   'background', 

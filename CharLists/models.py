@@ -73,7 +73,7 @@ class charList(models.Model):
     wisdom       = models.IntegerField()
     charisma     = models.IntegerField()
 
-    img = models.ImageField(upload_to='img/persons/', null=True, blank=True)
+    img = models.ImageField(upload_to='media/CharLists/img/persons/', null=True, blank=True)
     def __str__(self):
         return self.name;
 

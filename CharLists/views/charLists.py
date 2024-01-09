@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 import io
 
 from CharLists.models import charList , gameClass, gameRace, background, alignment
-from CharLists.serializers import charListSerializer, charListImgSerializer
+from CharLists.serializers import charListSerializer
 
 class CharLists(ViewSet):
     authentication_classes = [authentication.TokenAuthentication]
@@ -29,18 +29,9 @@ class CharLists(ViewSet):
         json = renderers.JSONRenderer().render(serialized.data)
         return HttpResponse(json);
 
-    def listImg(self, request):
-        UserId = Token.objects.get(key=request.auth.key).user.pk
-
-        charLists  = charList.objects.filter(user=UserId)
-        serialized = charListImgSerializer(charLists, many=True)
-
-        json = renderers.JSONRenderer().render(serialized.data)
-        return HttpResponse(json);
-
     def add(self, request):
         UserId = Token.objects.get(key=request.auth.key).user.pk
-        if (self.isCompleteRequest(request)):
+        if (not self.isCompleteRequest(request)):
             return Response({'ok': 'False'});
         else:
             cl = charList(
@@ -74,5 +65,5 @@ class CharLists(ViewSet):
             return Response({'ok': 'True'});
 
     def isCompleteRequest(self, request):
-        return False
+        return True
 
