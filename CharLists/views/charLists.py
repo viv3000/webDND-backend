@@ -14,25 +14,74 @@ from rest_framework.authtoken.models import Token
 import io
 
 from CharLists.models import charList , gameClass, gameRace, background, alignment
-from CharLists.serializers import charListSerializer
+from CharLists.serializers import charListImgSerializer
 
 class CharLists(ViewSet):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def list(self, request):
+    def person(self, request, id):
         UserId = Token.objects.get(key=request.auth.key).user.pk
 
-        charLists  = charList.objects.filter(user=UserId)
-        serialized = charListSerializer(charLists, many=True)
+        charLists  = charList.objects.filter(user=UserId, id=id)
+        serialized = charListImgSerializer(charLists, many=True)
 
         json = renderers.JSONRenderer().render(serialized.data)
         return HttpResponse(json);
 
+
+    def list(self, request):
+        UserId = Token.objects.get(key=request.auth.key).user.pk
+
+        charLists  = charList.objects.filter(user=UserId)
+        serialized = charListImgSerializer(charLists, many=True)
+
+        json = renderers.JSONRenderer().render(serialized.data)
+        return HttpResponse(json);
+
+    def update(self, request, id):
+        UserId = Token.objects.get(key=request.auth.key).user.pk
+        if (not self.isCompleteRequest(request)):
+            return Response({'ok': 'False'}, status=400);
+        else:
+            cl = charList.objects.get(id = id);
+            cl.user= User.objects.get(id = UserId)
+
+            cl.name = request.data['name']
+            cl.description=request.data['description']
+
+            cl.strength     = request.data['strength']
+            cl.dexterity    = request.data['dexterity']
+            cl.constitution = request.data['constitution']
+            cl.intelegency  = request.data['intelegency']
+            cl.wisdom       = request.data['wisdom']
+            cl.charisma     = request.data['charisma']
+
+            cl.gameClassMain = gameClass.objects.get(id = request.data['gameClassMain'])
+            cl.gameRace      = gameRace.objects.get (id = request.data['gameRace'])
+
+            if 'background' in request.data:
+                cl.background = background.objects.get(id = request.data['background'])
+            if 'alignment' in request.data:
+                cl.alignment = alignment.objects.get(id = request.data['alignment'])
+            if 'img' in request.data:
+                cl.img = request.FILES['img']
+            cl.save();
+            return Response({'ok': 'True'});
+
+    def delete(self, request, id):
+        try:
+            UserId = Token.objects.get(key=request.auth.key).user.pk
+            print(charList.objects.filter(user=UserId, id=id))
+            charList.objects.filter(user=UserId, id=id).delete()
+            return Response({'ok': 'True'});
+        except:
+            return Response({'ok': 'False'}, status=300);
+
     def add(self, request):
         UserId = Token.objects.get(key=request.auth.key).user.pk
         if (not self.isCompleteRequest(request)):
-            return Response({'ok': 'False'});
+            return Response({'ok': 'False'}, status=400);
         else:
             cl = charList(
                 user= User.objects.get(id = UserId),

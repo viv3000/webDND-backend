@@ -82,27 +82,6 @@ class charListSerializer(serializers.ModelSerializer):
                   'description'];
 
 class charListImgSerializer(serializers.ModelSerializer):
-    gameClassMain = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='title'
-    )
-    gameRace = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='title'
-    )
-    background = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='title'
-    )
-    alignment = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='title'
-    )
-    user = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='username'
-    )
-
     class Meta:
         model = charList;
         fields = ['id',
