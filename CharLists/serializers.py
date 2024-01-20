@@ -5,22 +5,22 @@ from .models import gameClass, gameClasses, gameRace, background, alignment, cha
 class gameClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = gameClass;
-        fields = ['id', 'title', 'description'];
+        fields = ['id', 'title', 'description', 'img'];
 
 class gameRaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = gameRace;
-        fields = ['id', 'title', 'description'];
+        fields = ['id', 'title', 'description', 'img'];
 
 class backgroundSerializer(serializers.ModelSerializer):
     class Meta:
         model = background;
-        fields = ['id', 'title', 'description'];
+        fields = ['id', 'title', 'description', 'img'];
 
 class alignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = alignment;
-        fields = ['id', 'title', 'description'];
+        fields = ['id', 'title', 'description', 'img'];
 
 class characteristicSerializer(serializers.ModelSerializer):
     class Meta:

@@ -5,24 +5,28 @@ from django.contrib.auth.models import User;
 class gameClass(models.Model):
     title = models.CharField(max_length=101)
     description = models.TextField()
+    img = models.FileField(upload_to='media/CharLists/img/classes/', null=True, blank=True)
     def __str__(self):
         return self.title;
 
 class gameRace(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
+    img = models.FileField(upload_to='media/CharLists/img/classes/', null=True, blank=True)
     def __str__(self):
         return self.title;
 
 class background(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
+    img = models.FileField(upload_to='media/CharLists/img/backgrounds/', null=True, blank=True)
     def __str__(self):
         return self.title;
 
 class alignment(models.Model):
     title = models.CharField(max_length=2)
     description = models.TextField()
+    img = models.FileField(upload_to='media/CharLists/img/alignments/', null=True, blank=True)
     def __str__(self):
         return self.title;
 
@@ -73,7 +77,7 @@ class charList(models.Model):
     wisdom       = models.IntegerField()
     charisma     = models.IntegerField()
 
-    img = models.ImageField(upload_to='media/CharLists/img/persons/', null=True, blank=True)
+    img = models.FileField(upload_to='media/CharLists/img/persons/', null=True, blank=True)
     def __str__(self):
         return self.name;
 

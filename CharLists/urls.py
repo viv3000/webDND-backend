@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework.authtoken import views
 
 from CharLists.views.charLists import *
-from CharLists.views.DNDInformation import alignmentList, classList, raceList, backgroundList
+from CharLists.views.DNDInformation import alignmentList, classList, raceList, backgroundList, gameClassForId, gameRaceForId, alignmentForId, backgroundForId
 
 urlpatterns = [
     path('api/CharLists/',     CharLists.as_view({'get': 'list'}), name='Persons'),
@@ -15,6 +15,14 @@ urlpatterns = [
     path('api/CharLists/Update/<int:id>/', CharLists.as_view({'post': 'update'}), name='PersonAdd'),
     path('api/CharLists/Delete/<int:id>',  CharLists.as_view({'post': 'delete'}), name='PersonAdd'),
     path('api/CharLists/Delete/<int:id>/', CharLists.as_view({'post': 'delete'}), name='PersonAdd'),
+    path('api/CharLists/Race/<int:id>',  gameRaceForId),
+    path('api/CharLists/Race/<int:id>/', gameRaceForId),
+    path('api/CharLists/Class/<int:id>',  gameClassForId),
+    path('api/CharLists/Class/<int:id>/', gameClassForId),
+    path('api/CharLists/Alignment/<int:id>',  alignmentForId),
+    path('api/CharLists/Alignment/<int:id>/', alignmentForId),
+    path('api/CharLists/Background/<int:id>',  backgroundForId),
+    path('api/CharLists/Background/<int:id>/', backgroundForId),
     path('api/CharLists/Classes',  classList),
     path('api/CharLists/Classes/', classList),
     path('api/CharLists/Races',  raceList),
